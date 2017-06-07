@@ -22,6 +22,6 @@ ecosystem.
 
 # Installation
 
-To give a try to the project, compile VTK 7.1 with java wrappers, clone the repo and import it in your IDE
+To give a try to the project, compile VTK 7.1 with java wrappers, clone the repository and import it in your IDE
 as a Maven project for compilation. 
 
