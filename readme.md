@@ -17,7 +17,7 @@ of the user interaction, large data handling, geometry visualisation and better 
 ecosystem.
 
 
-[](https://github.com/benoitlo/in.vizio/blob/master/invizio_illustration.PNG)
+[in.vizio illustration](https://github.com/benoitlo/in.vizio/blob/master/invizio_illustration.PNG)
 
 
 # Installation
