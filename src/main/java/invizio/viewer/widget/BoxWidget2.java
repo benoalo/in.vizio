@@ -26,7 +26,8 @@ package invizio.viewer.widget;
 
 
 import invizio.viewer.data.ViewerData;
-import invizio.viewer.event.MyObserver;
+import vtk.vtkActor;
+import vtk.vtkActorCollection;
 import vtk.vtkBoxRepresentation;
 import vtk.vtkBoxWidget2;
 import vtk.vtkCanvas;
@@ -52,8 +53,10 @@ public class BoxWidget2 extends DefaultWidget{
 	{
 		vtkRenderWindowInteractor renWinInteractor = renWin.getRenderWindowInteractor();
 		
-		boxWidget = new vtkBoxWidget2();
-		boxWidget.SetInteractor(renWinInteractor); // to move the box
+		widget = new vtkBoxWidget2();
+		widget.SetInteractor(renWinInteractor); // to move the box
+		
+		vtkBoxWidget2 boxWidget = (vtkBoxWidget2) widget;
 		boxWidget.AddObserver("InteractionEvent", this, "callBack"); // to trigger event when inteaction with the box happen
 		
 		boxRep = (vtkBoxRepresentation) boxWidget.GetRepresentation();
@@ -64,28 +67,13 @@ public class BoxWidget2 extends DefaultWidget{
 		vtkTransform transform = new vtkTransform();
 		transform.Identity();
 		boxRep.SetTransform( transform );
+		vtkActorCollection actors = new vtkActorCollection();
+		boxRep.GetActors( actors );
+		vtkActor actor = actors.GetNextActor();
+		while( actor != null ){
+			actor.GetMapper().SetImmediateModeRendering( 0 );
+		}
 		//callBack();
-	}
-	
-	
-	protected void callBack()
-	{
-		for( MyObserver observer: observers){ 
-			if( observer!=null ){	
-				observer.fireEvent( this );
-			}
-		}
-	}
-
-	
-	public void setVisibility(boolean visible){
-		if( visible ){
-			boxWidget.On();
-			callBack();
-		}
-		else{
-			boxWidget.Off();
-		}
 	}
 	
 	
@@ -94,6 +82,7 @@ public class BoxWidget2 extends DefaultWidget{
 		boxRep.GetPlanes( planes );
 		return planes;
 	}
+	
 	
 	public double[] getCenter()
 	{

@@ -29,13 +29,39 @@ import invizio.viewer.event.MyObserver;
 
 import java.util.ArrayList;
 
+import vtk.vtkInteractorObserver;
+
 public class DefaultWidget implements MyObservable {
 
+	vtkInteractorObserver widget;
 	
+	public DefaultWidget(){
+		
+	}
+	
+	public void setVisibility(boolean visible){
+		if( visible ){
+			widget.On();
+			callBack();
+		}
+		else{
+			widget.Off();
+		}
+	}
+	
+	
+	protected void callBack()
+	{
+		for( MyObserver observer: observers){ 
+			if( observer!=null ){	
+				observer.fireEvent( this );
+			}
+		}
+	}
 	
 	protected ArrayList<MyObserver> observers = new ArrayList<MyObserver>();
 
-	@Override
+	
 	public void addObserver(MyObserver observer) {
 		observers.add(observer);
 	}
