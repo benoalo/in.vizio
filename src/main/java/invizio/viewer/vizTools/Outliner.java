@@ -57,6 +57,7 @@ public class Outliner extends DefaultVizTool{
         outline.SetInputData(boundingBox);
         vtkPolyDataMapper outlineMapper = new vtkPolyDataMapper();
         outlineMapper.SetInputConnection(outline.GetOutputPort());
+        outlineMapper.SetImmediateModeRendering( 0 );
         prop3D = new vtkActor();
         ((vtkActor) prop3D).SetMapper(outlineMapper);
         ((vtkActor) prop3D).GetProperty().SetColor(0,0,0);
