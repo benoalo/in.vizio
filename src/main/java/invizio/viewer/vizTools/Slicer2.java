@@ -221,7 +221,6 @@ public class Slicer2 extends DefaultVizTool implements MyObserver{
 		return v;
 	}
 	
-	@Override
 	public void fireEvent(MyObservable observable) {
 		if( observable instanceof BoxWidget2 ){
 			//System.out.println("cropper: fired by "+observable.toString());
@@ -237,7 +236,6 @@ public class Slicer2 extends DefaultVizTool implements MyObserver{
 		}
 	}
 
-	@Override
 	public void needsUpdate(boolean needsUpdate) {	}
 
 }

@@ -35,12 +35,10 @@ public class DefaultMyObserver implements MyObserver{
 		this.delay = delay;
 	}
 	
-	@Override
 	public void fireEvent(MyObservable observable) {
 	
 	}
 
-	@Override
 	public void needsUpdate(boolean needsUpdate) {
 		this._needsUpdate = needsUpdate;
 	}

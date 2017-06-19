@@ -84,7 +84,6 @@ public class FreeDimensionControl extends JPanel implements AdjustmentListener, 
 	}
 	
 	
-	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
 		
 		scrollBar.removeAdjustmentListener(this);
@@ -109,7 +108,6 @@ public class FreeDimensionControl extends JPanel implements AdjustmentListener, 
 	}
 
 	
-	@Override
 	public void addObserver(MyObserver observer) {
 		
 		this.observers.add( observer );

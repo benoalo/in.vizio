@@ -36,6 +36,8 @@ import invizio.viewer.vizTools.Outliner;
 import invizio.viewer.vizTools.Slicer2;
 import invizio.viewer.vizTools.VolRenderer;
 import invizio.viewer.widget.BoxWidget2;
+import invizio.viewer.widget.DefaultWidget;
+import invizio.viewer.widget.OrientationMarkerWidget;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -74,9 +76,11 @@ public class Controller implements AbstractController {
 	}
 
 	
-	@Override
 	public void initialize() {
 
+		renWin.getRenderWindowInteractor().SetDesiredUpdateRate(100);
+		renWin.GetRenderer().AddObserver("EndEvent", this, "frameRateCallback");
+		
 		// Setup vizTools
 		VolRenderer volRenderer = new VolRenderer( data );
 		vizTools.add(volRenderer);
@@ -89,6 +93,9 @@ public class Controller implements AbstractController {
 		// create a box widget that will be associated to cropper and slicer
 		BoxWidget2 boxWidget = new BoxWidget2(data, renWin);
 	
+		// create an axes widget that will indicate the  data orientation
+		OrientationMarkerWidget axesWidget = new OrientationMarkerWidget(renWin);
+			
 		
 		// setup cropper
 		Cropper cropper = new Cropper();
@@ -153,7 +160,7 @@ public class Controller implements AbstractController {
         observeData= false;
         outlineCB.addActionListener( new VizToolButtonCallback(outliner, data, observeData));
         
-        // widget button
+        // box widget button
         JToggleButton widgetButton = (JToggleButton) viewerPanel.getButton("Widget");
         widgetButton.setSelected( false );
         boxWidget.setVisibility(false);
@@ -164,6 +171,12 @@ public class Controller implements AbstractController {
         cropperButton.setSelected( false );
         cropper.setEnabled(false);
         cropperButton.addActionListener( new CropperButtonCallback( cropper, boxWidget ) );
+        
+        // axes widget button
+        JCheckBox axesCB = (JCheckBox) viewerPanel.getButton("Axes");
+        axesCB.setSelected(false);
+        axesCB.addActionListener( new WidgetButtonCallback( axesWidget ) );
+        
 
 	}
 	
@@ -186,7 +199,6 @@ public class Controller implements AbstractController {
 			this.dataObserver = dataObserver;
 		}
 		
-		@Override
 		public void actionPerformed(ActionEvent e)
 		{
     		JToggleButton button = (JToggleButton) e.getSource();
@@ -202,6 +214,7 @@ public class Controller implements AbstractController {
 			}
 			updateRenderWindow();
 		}
+		
     }
 	
 	
@@ -218,7 +231,6 @@ public class Controller implements AbstractController {
 			this.widget = widget;
 		}
 		
-		@Override
 		public void actionPerformed(ActionEvent e)
 		{
     		JToggleButton button = (JToggleButton) e.getSource();
@@ -240,22 +252,21 @@ public class Controller implements AbstractController {
 	
 	class WidgetButtonCallback implements ActionListener
 	{
-		BoxWidget2 boxWidget;
+		DefaultWidget widget;
 		
-		WidgetButtonCallback(BoxWidget2 boxWidget)
+		WidgetButtonCallback( DefaultWidget boxWidget)
 		{
-			this.boxWidget = boxWidget;
+			this.widget = boxWidget;
 		}
 		
-		@Override
 		public void actionPerformed(ActionEvent e) {
 			JToggleButton button = (JToggleButton) e.getSource();
 			boolean widgetVisibility = button.isSelected(); 
 			if ( widgetVisibility ){	
-				boxWidget.setVisibility( true );
+				widget.setVisibility( true );
 			} 
 			else{	
-				boxWidget.setVisibility( false );
+				widget.setVisibility( false );
 			}
 			updateRenderWindow();
 		}
@@ -272,7 +283,6 @@ public class Controller implements AbstractController {
 			this.widget = boxWidget;
 		}
 		
-		@Override
 		public void actionPerformed(ActionEvent e) {
 			JToggleButton button = (JToggleButton) e.getSource();
 			boolean enabled = button.isSelected();
@@ -289,6 +299,8 @@ public class Controller implements AbstractController {
 			updateRenderWindow();
 		}
     }
+	
+	
 	
 	///////////////////////////////////////////////////////////////////////////
 	//  channel control callbacks  ////////////////////////////////////////////
@@ -314,7 +326,7 @@ public class Controller implements AbstractController {
 				prevCh.put("min", -1d);
 				prevCh.put("max", -1d);
 				prevCh.put("gamma", -1d);
-				prevCh.put("visible", false);
+				prevCh.put("visible", true);
 				previous.put(ch, prevCh );
 			}
 		}
@@ -359,20 +371,20 @@ public class Controller implements AbstractController {
 			boolean stateChanged= false;
 			
 			
-			if( min!=(double)previous.get(channel).get("min") ){
+			if( min!=(Double)previous.get(channel).get("min") ){
 				previous.get(channel).put("min",min);
 				stateChanged=true;
 			}
-			if( max!=(double)previous.get(channel).get("max") ){
+			if( max!=(Double)previous.get(channel).get("max") ){
 				previous.get(channel).put("max",max);
 				stateChanged=true;
 			}
-			if( gamma!=(double)previous.get(channel).get("gamma") ){
+			if( gamma!=(Double)previous.get(channel).get("gamma") ){
 				previous.get(channel).put("gamma",gamma);
 				stateChanged=true;
 			}
 			visibleChanged=false;
-			if( visible!=(boolean)previous.get(channel).get("visible") ){
+			if( visible!=(Boolean)previous.get(channel).get("visible") ){
 				previous.get(channel).put("visible",visible);
 				visibleChanged=true;
 				stateChanged=true;
@@ -431,7 +443,7 @@ public class Controller implements AbstractController {
 		// start a thread that will turn the flag on after delay ms
 		ScheduledExecutorService executorTimer = Executors.newScheduledThreadPool(1);
 		Runnable task = new Runnable() {
-			@Override
+			
 			public void run() { readyToRender = true; }
 		};
 		executorTimer.schedule(task, delay, TimeUnit.MILLISECONDS);
@@ -468,4 +480,9 @@ public class Controller implements AbstractController {
 	}
 	
 
+	protected void frameRateCallback(){
+		double renderTime = renWin.GetRenderer().GetLastRenderTimeInSeconds();
+		System.out.println("" + (1/renderTime) + " fps" );
+	}
+	
 }

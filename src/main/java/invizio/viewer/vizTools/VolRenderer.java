@@ -51,6 +51,7 @@ public class VolRenderer extends DefaultVizTool{
         volumeMapper.SetBlendModeToComposite();
         //volumeMapper.SetBlendModeToMaximumIntensity();
         volumeMapper.SetRequestedRenderModeToGPU();
+        
         //volumeMapper.SetRequestedRenderModeToRayCast();
         
         updateProp();

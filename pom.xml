@@ -64,7 +64,7 @@
         <system>None</system>
     </ciManagement>
     <properties>
-        <main-class>Invizio.projecttitle.ProjectTitle</main-class>
+        <main-class>Invizio_plugin</main-class>
         <scijava.jvm.version>1.8</scijava.jvm.version>
         <license.licenseName>bsd_3</license.licenseName>
         <license.copyrightOwners>Benoit Lombardot</license.copyrightOwners>

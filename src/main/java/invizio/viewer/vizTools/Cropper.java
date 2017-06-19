@@ -113,7 +113,6 @@ public class Cropper implements MyObserver{
 	
 	
 	// MyObserver methods: cropper can observe a widget
-	@Override
 	public void fireEvent(MyObservable observable)
 	{
 		if( observable instanceof BoxWidget2 ){
@@ -126,7 +125,6 @@ public class Cropper implements MyObserver{
 		}
 	}
 
-	@Override
 	public void needsUpdate(boolean needsUpdate) {	}
 
 	

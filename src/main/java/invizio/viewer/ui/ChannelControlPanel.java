@@ -178,7 +178,6 @@ public class ChannelControlPanel extends JPanel implements ChangeListener, MyObs
 	
 	
 
-	@Override
 	public void stateChanged(ChangeEvent e) {
 		
 		if( e.getSource().equals(visibilityCB)){
@@ -278,7 +277,6 @@ public class ChannelControlPanel extends JPanel implements ChangeListener, MyObs
 	}
 
 
-	@Override
 	public void addObserver(MyObserver observer) {
 		
 		this.observers.add( observer );

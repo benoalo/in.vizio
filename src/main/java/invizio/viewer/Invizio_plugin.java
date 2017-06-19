@@ -24,11 +24,12 @@
 
 package invizio.viewer;
 
+import java.io.IOException;
+
 import javax.swing.SwingUtilities;
 
 import net.imagej.Dataset;
 import net.imagej.ImageJ;
-import net.imglib2.type.numeric.RealType;
 
 import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
@@ -36,19 +37,17 @@ import org.scijava.plugin.Plugin;
 
 
 
-@Plugin(type = Command.class, menuPath = "Plugins>in.vizio", label="in.vizio")
-public class Invizio_plugin<T extends RealType<T> > implements Command {
+@Plugin(type = Command.class, menuPath = "Plugins>invizio", label="invizio")
+public class Invizio_plugin implements Command {
 
 	@Parameter (required=false)
 	private	Dataset dataset;
 	
-	@Override
 	public void run() 
 	{
 		SwingUtilities.invokeLater(new Runnable() 
 		{
-			@Override
-	        public void run() 
+			public void run() 
 		    {
                 //double[] spacing = new double[] {1,1,1,1,1};
             	//String[] axisNames = new String[] {"XX","YY","CC","ZZ"};
@@ -59,14 +58,22 @@ public class Invizio_plugin<T extends RealType<T> > implements Command {
 		});
 	}
 	
-	public static <T extends RealType<T>> void main(final String... args) throws Exception {
+	public static void main(final String... args){
 		
-		final ImageJ ij = net.imagej.Main.launch(args);
-		//Dataset dataset = (Dataset) ij.io().open("C:\\Users\\Ben\\workspace\\testImages\\t1-head.tif");		
-		Dataset dataset = (Dataset) ij.io().open("C:\\Users\\Ben\\workspace\\testImages\\mitosis.tif");		
-		//Dataset dataset = (Dataset) ij.io().open("C:\\Users\\Ben\\workspace\\testImages\\blobs.tif");		
-		ij.ui().show(dataset);
-		ij.command().run(Invizio_plugin.class, true);
+		System.out.println("hello 0");
+		final ImageJ ij = new ImageJ();
+		ij.ui().showUI();
+		System.out.println("hello 1");
+		
+		Dataset dataset;
+		try {
+			dataset = (Dataset) ij.io().open("C:\\Users\\Ben\\workspace\\testImages\\mitosis.tif");
+			ij.ui().show(dataset);
+			ij.command().run(Invizio_plugin.class, true);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 
 		

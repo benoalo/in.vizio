@@ -137,7 +137,6 @@ public class DataUtils {
 			this.rai = rai;
 		}
 		
-		@Override
 		public double[] call() throws Exception {
 			Cursor<? extends RealType<?>> cursor = Views.iterable(rai).cursor();
 			double min = cursor.next().getRealDouble();

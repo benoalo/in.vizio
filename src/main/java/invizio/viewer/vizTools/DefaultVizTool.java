@@ -40,26 +40,22 @@ public class DefaultVizTool implements AbstractVizTool{
 	}
 	
 	
-	@Override
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 
-	@Override
 	public boolean getEnabled() {
 		return enabled;
 	}
 	
 	
 	
-	@Override
 	public vtkProp3D getProp()
 	{
 		return prop3D;
 	}
 	
 	
-	@Override
 	public void updateProp()
 	{	
 		
@@ -68,7 +64,6 @@ public class DefaultVizTool implements AbstractVizTool{
 	
 	
 	
-	@Override
 	public void updateLuts() {
 		long nCh = data.getChannelNumber();
 		for(long ch=0; ch<nCh; ch++){
@@ -76,10 +71,8 @@ public class DefaultVizTool implements AbstractVizTool{
 		}
 	}
 
-	@Override
 	public void updateLut(long channel){		}
 	
-	@Override
 	public void updateChannelVisibility(long channel, boolean visible) {		}
 
 
