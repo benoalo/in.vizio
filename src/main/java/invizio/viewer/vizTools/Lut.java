@@ -48,7 +48,7 @@ public class Lut {
     	TreeMap<Float, float[]> lutPoints = new TreeMap<Float, float[]>();
 		lutName = lutName.toLowerCase();
 			
-		if (lutName == "gray" ){
+		if (lutName == "grays" ){
 			lutPoints.put( 0.0f, new float[] {0f,0f,0f});
 			lutPoints.put( 1.0f, new float[] {1f,1f,1f});
 		}

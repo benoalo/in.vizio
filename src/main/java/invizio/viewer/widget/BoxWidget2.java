@@ -49,9 +49,9 @@ public class BoxWidget2 extends DefaultWidget{
 	vtkBoxRepresentation boxRep;
 	
 	
-	public BoxWidget2( ViewerData data, vtkCanvas renWin )
+	public BoxWidget2( ViewerData data, vtkRenderWindowInteractor renWinInteractor )
 	{
-		vtkRenderWindowInteractor renWinInteractor = renWin.getRenderWindowInteractor();
+		//vtkRenderWindowInteractor renWinInteractor = renWin.getRenderWindowInteractor();
 		
 		widget = new vtkBoxWidget2();
 		widget.SetInteractor(renWinInteractor); // to move the box

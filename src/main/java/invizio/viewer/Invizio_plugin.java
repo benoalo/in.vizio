@@ -58,22 +58,16 @@ public class Invizio_plugin implements Command {
 		});
 	}
 	
-	public static void main(final String... args){
+	public static void main(final String... args) throws Exception {
 		
-		System.out.println("hello 0");
-		final ImageJ ij = new ImageJ();
-		ij.ui().showUI();
-		System.out.println("hello 1");
-		
-		Dataset dataset;
-		try {
-			dataset = (Dataset) ij.io().open("C:\\Users\\Ben\\workspace\\testImages\\mitosis.tif");
-			ij.ui().show(dataset);
-			ij.command().run(Invizio_plugin.class, true);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
+		final ImageJ ij = net.imagej.Main.launch(args);
+		//Dataset dataset = (Dataset) ij.io().open("C:\\Users\\Ben\\workspace\\testImages\\t1-head.tif");		
+		//Dataset dataset = (Dataset) ij.io().open("C:\\Users\\Ben\\workspace\\testImages\\mitosis.tif");		
+		//Dataset dataset = (Dataset) ij.io().open("C:\\Users\\Ben\\workspace\\testImages\\blobs.tif");		
+		//Dataset dataset = (Dataset) ij.io().open("/Users/lombardo/workspace/test_images/sample_normal.tif");
+		Dataset dataset = (Dataset) ij.io().open("/Users/lombardo/workspace/test_images/mitosis.tif");
+		ij.ui().show(dataset);
+		ij.command().run(Invizio_plugin.class, true);
 	}
 
 		

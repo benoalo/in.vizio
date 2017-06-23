@@ -29,6 +29,7 @@ import invizio.viewer.ui.ChannelControlPanel;
 import invizio.viewer.ui.FreeDimensionControl;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.HashMap;
@@ -41,6 +42,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
 import vtk.vtkCanvas;
+import vtk.rendering.jogl.*;
 
 //	- add action listener to buttons
 
@@ -49,7 +51,7 @@ public class ViewerPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
-	vtkCanvas renWin;
+	vtkJoglCanvasComponent renWin;
 	JPanel freeDimensionsPanel;
 	Map< String, FreeDimensionControl> freeDimControls;
 	JPanel controlsPanel;
@@ -66,7 +68,7 @@ public class ViewerPanel extends JPanel {
 		// Central panel ///////////////////////////////////////////////////////
 		
 		// panel for the vtk rendering ///////////////////////////////////
-		renWin = new vtkCanvas();
+		renWin = new vtkJoglCanvasComponent();
 		
 		// panel containing horizontal scroll bar for each free dimension ////
 		freeDimensionsPanel = new JPanel();
@@ -78,7 +80,7 @@ public class ViewerPanel extends JPanel {
 		JPanel centerPanel  = new JPanel();
 		centerPanel.setLayout( new BorderLayout() );
 		centerPanel.setPreferredSize(new Dimension(centerPanel.getPreferredSize().width, centerPanel.getPreferredSize().height));
-		centerPanel.add(renWin,BorderLayout.CENTER);
+		centerPanel.add(renWin.getComponent(),BorderLayout.CENTER);
 		centerPanel.add(freeDimensionsPanel, BorderLayout.SOUTH);
 		
 		
@@ -212,7 +214,7 @@ public class ViewerPanel extends JPanel {
 	
 	// other ui elements //////////////////////////////////
 	
-	public vtkCanvas getVtkCanvas(){
+	public vtkJoglCanvasComponent getVtkCanvas(){
 		return renWin;
 	}
 	

@@ -48,9 +48,9 @@ public class VolRenderer extends DefaultVizTool{
         ((vtkVolume) prop3D).SetProperty(volumeProperty);
         
         //volumeMapper.SetInterpolationModeToLinear();
-        volumeMapper.SetBlendModeToComposite();
+        //volumeMapper.SetBlendModeToComposite();
         //volumeMapper.SetBlendModeToMaximumIntensity();
-        volumeMapper.SetRequestedRenderModeToGPU();
+        //volumeMapper.SetRequestedRenderModeToGPU();
         
         //volumeMapper.SetRequestedRenderModeToRayCast();
         
@@ -64,6 +64,7 @@ public class VolRenderer extends DefaultVizTool{
 		super.updateProp();
 		volumeMapper.RemoveAllInputs();
 		volumeMapper.SetInputData( data.getVtkImageData() );
+		//volumeMapper.Update();
         //updateLuts(); // add data color and opacity transfer function to volume property           
 	}
 	

@@ -3,15 +3,16 @@ package invizio.viewer.widget;
 import vtk.vtkCanvas;
 import vtk.vtkOrientationMarkerWidget;
 import vtk.vtkAxesActor;
+import vtk.vtkRenderWindowInteractor;
 
 public class OrientationMarkerWidget extends DefaultWidget{
 
 		
-	public OrientationMarkerWidget( vtkCanvas renWin )
+	public OrientationMarkerWidget( vtkRenderWindowInteractor renWinInteractor  )
 	{
 		// Set up the axes widget
 		widget = new vtkOrientationMarkerWidget();
-		widget.SetInteractor( renWin.getRenderWindowInteractor() );
+		widget.SetInteractor( renWinInteractor );
 		
 		vtkOrientationMarkerWidget widget2 = (vtkOrientationMarkerWidget) widget;
 		widget2.SetOutlineColor( 0.9300, 0.5700, 0.1300 );

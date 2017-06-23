@@ -55,14 +55,16 @@ import javax.swing.JCheckBox;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 
+import vtk.vtkBorderWidget;
 import vtk.vtkCamera;
 import vtk.vtkCanvas;
+import vtk.rendering.jogl.*;
 
 
 public class Controller implements AbstractController {
 
 	ViewerPanel viewerPanel;
-	vtkCanvas renWin;
+	vtkJoglCanvasComponent renWin;
 	ViewerData data;
 	ArrayList<DefaultVizTool> vizTools = new ArrayList<DefaultVizTool>();
 	
@@ -79,7 +81,7 @@ public class Controller implements AbstractController {
 	public void initialize() {
 
 		renWin.getRenderWindowInteractor().SetDesiredUpdateRate(100);
-		renWin.GetRenderer().AddObserver("EndEvent", this, "frameRateCallback");
+		renWin.getRenderer().AddObserver("EndEvent", this, "frameRateCallback");
 		
 		// Setup vizTools
 		VolRenderer volRenderer = new VolRenderer( data );
@@ -91,10 +93,10 @@ public class Controller implements AbstractController {
 		
 		
 		// create a box widget that will be associated to cropper and slicer
-		BoxWidget2 boxWidget = new BoxWidget2(data, renWin);
+		BoxWidget2 boxWidget = new BoxWidget2(data, renWin.getRenderWindowInteractor());
 	
 		// create an axes widget that will indicate the  data orientation
-		OrientationMarkerWidget axesWidget = new OrientationMarkerWidget(renWin);
+		OrientationMarkerWidget axesWidget = new OrientationMarkerWidget(renWin.getRenderWindowInteractor() );
 			
 		
 		// setup cropper
@@ -106,13 +108,18 @@ public class Controller implements AbstractController {
 		// put there all the logic common to all version of the viewer 
 		// initialize the camera position
         vtkCamera camera = CameraUtils.createCameraCenteredOnDataset(data);
-        renWin.GetRenderer().SetActiveCamera(camera);
-        
+        renWin.getRenderer().SetActiveCamera(camera);
+        renWin.getRenderer().ResetCameraClippingRange();
+//		vtkBorderWidget borderWidget = new vtkBorderWidget(  );
+//		borderWidget.SetDefaultRenderer( renWin.getRenderer() );
+//		borderWidget.SetInteractor( renWin.getRenderWindowInteractor() );
+//		borderWidget.EnabledOn();
+//        
         
         // Setup the background gradient
-        renWin.GetRenderer().GradientBackgroundOn();
-        renWin.GetRenderer().SetBackground(.7,.7,.85);
-        renWin.GetRenderer().SetBackground2(.99,.99,1.0);
+        renWin.getRenderer().GradientBackgroundOn();
+        renWin.getRenderer().SetBackground(.7,.7,.85);
+        renWin.getRenderer().SetBackground2(.99,.99,1.0);
         
         
         // add channel control for each dataset channel
@@ -143,7 +150,7 @@ public class Controller implements AbstractController {
         // renderer button
         JToggleButton volRenButton = (JToggleButton) viewerPanel.getButton("VolRenderer");
         volRenButton.setSelected( true );
-        renWin.GetRenderer().AddActor( volRenderer.getProp() );
+        renWin.getRenderer().AddActor( volRenderer.getProp() );
 		data.addObserver(volRenderer); // to be consistant with volren button being selected
 		boolean observeData = true;
         volRenButton.addActionListener( new VizToolButtonCallback(volRenderer, data, observeData) );
@@ -203,12 +210,12 @@ public class Controller implements AbstractController {
 		{
     		JToggleButton button = (JToggleButton) e.getSource();
 			if (button.isSelected()){
-				renWin.GetRenderer().AddActor( vizTool.getProp() );
+				renWin.getRenderer().AddActor( vizTool.getProp() );
 				if(dataObserver)
 					data.addObserver(vizTool);
 			} 
 			else{
-				renWin.GetRenderer().RemoveActor( vizTool.getProp() );
+				renWin.getRenderer().RemoveActor( vizTool.getProp() );
 				if(dataObserver)
 					data.removeObserver(vizTool);
 			}
@@ -235,14 +242,14 @@ public class Controller implements AbstractController {
 		{
     		JToggleButton button = (JToggleButton) e.getSource();
 			if (button.isSelected()){
-				renWin.GetRenderer().AddActor( slicer.getProp() );
+				renWin.getRenderer().AddActor( slicer.getProp() );
 				data.addObserver(slicer);
 				widget.addObserver( slicer );
 				slicer.setPosition( widget.getCenter());
 				slicer.setOrientation( widget.getTransform() );
 			} 
 			else{
-				renWin.GetRenderer().RemoveActor( slicer.getProp() );
+				renWin.getRenderer().RemoveActor( slicer.getProp() );
 				data.removeObserver(slicer);
 				widget.removeObserver( slicer );
 			}
@@ -481,7 +488,7 @@ public class Controller implements AbstractController {
 	
 
 	protected void frameRateCallback(){
-		double renderTime = renWin.GetRenderer().GetLastRenderTimeInSeconds();
+		double renderTime = renWin.getRenderer().GetLastRenderTimeInSeconds();
 		System.out.println("" + (1/renderTime) + " fps" );
 	}
 	
